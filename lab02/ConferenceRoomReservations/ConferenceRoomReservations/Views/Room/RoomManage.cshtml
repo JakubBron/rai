@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Room>
+@{
+	ViewData["Title"] = "Zarządzanie salkami";
+}
+
+<h2>Zarządzanie salkami</h2>
+
+@if (TempData["Success"] != null)
+{
+	<div style="color:green">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+	<div style="color:red">@TempData["Error"]</div>
+}
+@if (TempData["Created"] != null)
+{
+	<div style="color:green">@TempData["Created"]</div>
+}
+@if (TempData["CreateError"] != null)
+{
+	<div style="color: red">@TempData["CreateError"]</div>
+}
+
+
+<div id="existingRooms" class="d-inline p-2">
+	<h3>Istniejące salki</h3>
+	<table border="1" cellpadding="5">
+		<tr>
+			<th>Nazwa</th>
+			<th>Pojemność</th>
+			<th>Id</th>
+			<th>Opcje</th>
+		</tr>
+		@foreach (var room in Model)
+		{
+			<tr>
+				<td>@room.Name</td>
+				<td>@room.Capacity</td>
+				<td>@room.Id</td>
+				<td>
+					<form asp-controller="Room" asp-action="Delete" method="post" style="display:inline;">
+						<input type="hidden" name="Id" value="@room.Id" />
+						<button type="submit">Delete</button>
+					</form>
+				</td>
+			</tr>
+		}
+	</table>
+</div>
+<div id="formNewRoom" class="d-inline p-2">
+	<partial name="_AddRoomForm" model="new Room()" />
+</div>
+

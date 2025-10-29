@@ -1,0 +1,43 @@
+﻿@using ConferenceRoomReservations.Helpers
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+@if (ViewBag.Error != null)
+{
+	string userFriendlyError = ViewBag.Error switch
+	{
+		AppKeywords.AuthError_LoginRequired => "Akcja wymaga zalogowania.",
+		_ => "Wystąpił nieznany błąd. Spróbuj ponownie."
+	};
+	<div class="alert alert-danger">@userFriendlyError</div>
+}
+
+<div class="text-center">
+	<h1 class="display-4">Witaj w systemie rezerwacji sal konferencyjnych</h1>
+	@if (!(User.Identity?.IsAuthenticated ?? false))
+	{
+		<p><a class="btn btn-primary" asp-controller="Account" asp-action="Login">Przejdź do logowania, aby uzyskać dostęp do funkcjonalności.</a></p>
+	}
+	else
+	{
+		<p>Witaj, <strong>@ViewBag.Username</strong>! (rola: @ViewBag.Role)</p>
+		<form asp-controller="Account" asp-action="Logout" method="post">
+			<button class="btn btn-primary" type="submit">Wyloguj się</button>
+		</form>
+
+		<p>
+			<a class="btn btn-secondary" asp-controller="Booking" asp-action="Calendar">Przejdź do kalendarza rezerwacji</a>
+		</p>
+		
+		@if (ViewBag.Role == AppRoles.Admin)
+		{
+			<p>
+				<a class="btn btn-success" asp-controller="Init">TODO Zasil aplikację danymi</a>
+				<a class="btn btn-success" asp-controller="Room" asp-action="Manage">TODO Zarządzaj salami</a>
+			</p>
+		}
+		
+	}
+</div>

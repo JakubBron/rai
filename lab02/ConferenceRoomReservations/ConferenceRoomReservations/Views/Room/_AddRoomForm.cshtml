@@ -1,0 +1,12 @@
+﻿@model Room
+
+<h3>Dodaj nową salkę</h3>
+<form asp-controller="Room" asp-action="Add" method="post" class="add-room-form">
+	<label for="Name">Nazwa:</label>
+	<input asp-for="Name" class="form-control" />
+
+	<label for="Capacity">Pojemność:</label>
+	<input asp-for="Capacity" type="number" min="1" class="form-control" />
+
+	<button type="submit">Add Room</button>
+</form>
