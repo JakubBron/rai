@@ -4,5 +4,24 @@
 @{
 }
 
-<h2>TODO</h2>
-<p>Widok kalendarza dla zalogowanego użytkownika!</p>
+@section Scripts {
+	<script src="~/js/bookingCalendar.js"></script>
+}
+
+<h1>Kalendarz rezerwacji</h1>
+<div>
+	<div id="message" class="alert" style="display:none;"></div>
+
+	<div id="header">
+		Zajętość sal konferencyjnych na dzień <strong>@ViewBag.Date.ToString("dd.MM.yyyy") </strong>
+	</div>
+	<div id="calendar">
+		Obecnie nie ma tu nic do wyświetlenia. Skontaktuj się z Administratorem.
+	</div>
+
+
+	<!-- Hidden template container -->
+	<div id="buttonTemplate" style="display:none;">
+		@Html.Partial("_ReserveButton")
+	</div>
+</div>

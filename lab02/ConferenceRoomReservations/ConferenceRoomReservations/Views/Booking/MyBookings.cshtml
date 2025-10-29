@@ -1,0 +1,38 @@
+﻿@model MyBookingsViewModel
+
+@section Scripts {
+	<script src="~/js/MyBookings.js"></script>
+}
+
+<h2>Moje rezerwacje</h2>
+
+@if (Model.Bookings == null || !Model.Bookings.Any())
+{
+	<p>Brak rezerwacji na dzisiaj.</p>
+}
+else
+{
+	<a class="btn btn-primary mb-3" href="/Booking/ExportMyBookings">Eksportuj moje rezerwacje</a>
+
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Sala konferencyjna </th>
+			<th>Rezerwacja od</th>
+			<th>Rezerwacja do</th>
+			<th>Akcja</th>
+		</tr>
+		</thead>
+		<tbody>
+			@foreach (var reservation in Model.Bookings)
+		{
+			<tr>
+				<td>@Model.RoomsById.GetValueOrDefault(reservation.RoomId, $"{reservation.RoomId}")</td>
+				<td>@reservation.StartTime.ToString("HH:mm")</td>
+				<td>@reservation.EndTime.ToString("HH:mm")</td>
+				<td><button class="btn-danger" onclick="cancelReservation(@reservation.RoomId, '@reservation.StartTime.ToString("HH:mm")')">Anuluj rezerwację</button></td>
+			</tr>
+		}
+		</tbody>
+	</table>
+}

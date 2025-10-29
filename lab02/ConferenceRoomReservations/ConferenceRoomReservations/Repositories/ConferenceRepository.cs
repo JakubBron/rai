@@ -10,8 +10,6 @@ public class ConferenceRepository : IConferenceRepository
 
     public IEnumerable<Room> GetRooms() => _rooms.Values;
 
-    public Room GetRoomById(int roomId) => _rooms.Values.FirstOrDefault(r => r.Id == roomId);
-
     public bool AddRoom(Room room)
     {
         if (string.IsNullOrWhiteSpace(room.Name))
@@ -22,26 +20,6 @@ public class ConferenceRepository : IConferenceRepository
 
         room.Id = Interlocked.Increment(ref _nextRoomId) - 1;
         return _rooms.TryAdd(room.Name, room);
-    }
-
-    public IEnumerable<Reservation> GetReservations() => _reservations;
-
-    public bool TryMakeReservation(Reservation reservation)
-    {
-        lock (_reservationLock)
-        {
-            bool conflict = _reservations.Any(r =>
-                r.RoomId == reservation.RoomId &&
-                r.StartTime < reservation.EndTime &&
-                reservation.StartTime < r.EndTime
-            );
-
-            if (conflict)
-                return false;
-
-            _reservations.Add(reservation);
-            return true;
-        }
     }
 
     public bool RemoveRoom(Room room)
@@ -59,5 +37,56 @@ public class ConferenceRepository : IConferenceRepository
         if (room == null)
             return false;
         return _rooms.TryRemove(room.Name, out _);
+    }
+
+
+    public IEnumerable<Reservation> GetReservations()
+    {
+        lock (_reservationLock)
+        {
+            return _reservations.ToList();
+        }
+    }
+
+    public bool TryMakeReservation(Reservation reservation)
+    {
+        if (!reservation.IsValid)
+        {
+            return false;
+        }
+
+        lock (_reservationLock)
+        {
+            bool conflict = _reservations.Any(r =>
+                r.RoomId == reservation.RoomId &&
+                r.StartTime < reservation.EndTime &&
+                reservation.StartTime < r.EndTime
+            );
+
+            if (conflict)
+                return false;
+
+            _reservations.Add(reservation);
+            return true;
+        }
+    }
+
+    public Reservation FindReservationByParams(string username, DateTime startDate, int id)
+    {
+       var found = _reservations.Find(r =>
+            r.RoomId == id &&
+            r.StartTime == startDate &&
+            r.UserName == username
+        );
+
+        return found;
+    }
+
+    public bool DeleteReservation(Reservation reservation)
+    {
+        lock (_reservationLock)
+        {
+            return _reservations.Remove(reservation);
+        }
     }
 }

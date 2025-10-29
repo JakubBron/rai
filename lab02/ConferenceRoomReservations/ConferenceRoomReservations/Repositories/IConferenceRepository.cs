@@ -11,5 +11,8 @@ public interface IConferenceRepository
     bool TryMakeReservation(Reservation reservation); // Thread-safe
 
     bool RemoveRoomById(int id);
+    Reservation FindReservationByParams(string userName, DateTime beginTime, int id);
+
+    bool DeleteReservation(Reservation reservation); // Thread-safe
 }
   
