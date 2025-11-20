@@ -1,0 +1,76 @@
+﻿@page
+@using DataModelsLib.CustomTypes
+@model WebApp.Pages.Reservation.IndexModel
+
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+<h1>Reservations</h1>
+
+@if (User.IsInRole(RoleNames.Prowadzący))
+{
+	<p>
+		<a asp-page="../Availability/Create">Create New Reservations via Creating Availability</a> |
+		<a asp-page="./Block">Block slots in datetime range</a> |
+	</p>
+}
+
+<table class="table">
+    <thead>
+    <tr>
+	    <th>
+		    Duration
+	    </th>
+	    <th>
+		    To who?
+	    </th>
+	    <th>
+		    Who reserves?
+	    </th>
+	    <th>
+			Status
+	    </th>
+	    <th>
+            Room name
+	    </th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ReservationsView) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Timespan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeacherEmail)
+            </td>
+            <td>
+	            @Html.DisplayFor(modelItem => item.StudentEmail)
+            </td>
+            <td>
+	            @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomDisplay)
+            </td>
+			
+            @if (User.IsInRole(RoleNames.Prowadzący))
+            {
+
+	            <td>
+		            <a asp-page="./Cancel" asp-route-id="@item.Id">Cancel reservation</a> |
+		            <a asp-page="./Move" asp-route-id="@item.Id">Move to other slot</a>
+	            </td>
+            }
+            @if (User.IsInRole(RoleNames.Student))
+            {
+	            <td>
+		            <a asp-page="./Cancel" asp-route-id="@item.Id">Cancel my reservation</a> |
+		            <a asp-page="./Occupy" asp-route-id="@item.Id">Occupy this slot</a> |
+	            </td>
+            }
+	</tr>
+}
+    </tbody>
+</table>

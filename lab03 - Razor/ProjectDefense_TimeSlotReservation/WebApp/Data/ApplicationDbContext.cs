@@ -14,6 +14,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
 
     public DbSet<Room> Rooms { get; set; }
     public DbSet<TeacherAvailability> TeacherAvailabilities { get; set; }
-    public DbSet<Reservations> Reservations { get; set; }
+    public DbSet<ReservationsModel> Reservations { get; set; }
     public DbSet<BlacklistEntity> Blacklist { get; set; }
 }

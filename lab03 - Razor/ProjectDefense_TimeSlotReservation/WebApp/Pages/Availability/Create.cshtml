@@ -32,7 +32,11 @@
 		<input asp-for="Input.EndTime" type="time" class="form-control" />
 		<span asp-validation-for="Input.EndTime" class="text-danger"></span>
 	</div>
-
+	<div class="form-group">
+		<label asp-for="Input.DurationMins"></label>
+		<input asp-for="Input.DurationMins" type="number" class="form-control" />
+		<span asp-validation-for="Input.DurationMins" class="text-danger"></span>
+	</div>
 
 	<div class="form-group">
 		<label asp-for="Input.RoomId"></label>

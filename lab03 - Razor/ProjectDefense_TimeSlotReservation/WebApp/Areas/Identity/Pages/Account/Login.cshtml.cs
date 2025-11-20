@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using WebApp.ModelsInternal;
 using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+using WebApp.Data;
 
 namespace WebApp.Areas.Identity.Pages.Account
 {
@@ -23,11 +25,15 @@ namespace WebApp.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger, UserManager<User> userManager, ApplicationDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
+            _context = context;
         }
 
         /// <summary>
@@ -111,6 +117,19 @@ namespace WebApp.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+                // check if user in on blacklist
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                var blacklist = _context.Blacklist;
+                if (user != null)
+                {
+                    bool isBanned = await blacklist.AnyAsync(b => b.StudentId == user.Id);
+                    if (isBanned)
+                    {
+                        ModelState.AddModelError(string.Empty, "Your account has been banned.");
+                        return Page();  // stops login
+                    }
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);

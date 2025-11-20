@@ -1,0 +1,51 @@
+﻿@page
+@model WebApp.Pages.Ban.BanModel
+@{
+	ViewData["Title"] = "User Ban Management";
+}
+
+<h1>User Ban Management</h1>
+
+<div class="row mt-4">
+
+	<!-- LEFT COLUMN - BAN -->
+	<div class="col-md-6 border-end">
+		<h3>Ban User</h3>
+
+		<form method="post" asp-page-handler="Ban">
+			<div class="form-group mb-3">
+				<label>Select active user</label>
+				<select asp-for="SelectedActiveUserId" class="form-control">
+					<option value="">-- Select User --</option>
+					@foreach (var u in Model.ActiveUsers)
+					{
+						<option value="@u.Id">@u.Email</option>
+					}
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-danger">Ban</button>
+		</form>
+	</div>
+
+	<!-- RIGHT COLUMN - UNBAN -->
+	<div class="col-md-6">
+		<h3>Unban User</h3>
+
+		<form method="post" asp-page-handler="Unban">
+			<div class="form-group mb-3">
+				<label>Select banned user</label>
+				<select asp-for="SelectedBannedUserId" class="form-control">
+					<option value="">-- Select User --</option>
+					@foreach (var u in Model.BannedUsers)
+					{
+						<option value="@u.Id">@u.Email</option>
+					}
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-success">Unban</button>
+		</form>
+	</div>
+
+</div>

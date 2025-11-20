@@ -27,10 +27,19 @@
 		                @if (User.IsInRole(RoleNames.Prowadzący))
 		                {
 			                <li class="nav-item">
+				                <a class="nav-link" asp-page="/Ban/Index">Ban users</a>
+			                </li>
+			                <li class="nav-item">
 				                <a class="nav-link" asp-page="/Rooms/Index">Rooms</a>
 			                </li>
 			                <li class="nav-item">
 				                <a class="nav-link" asp-page="/Availability/Index">Teacher Availability</a>
+			                </li>
+		                }
+                        @if (User.Identity.IsAuthenticated)
+		                {
+			                <li class="nav-item">
+				                <a class="nav-link" asp-page="/Reservation/Index">Reservations</a>
 			                </li>
 		                }
 	                </ul>

@@ -24,7 +24,7 @@ namespace WebApp.Services
             var duration = _teacherAvailability.DurationMins;
 
 
-            for (var day = firstDay; day < lastDay; day = day.AddDays(1))
+            for (var day = firstDay; day <= lastDay; day = day.AddDays(1))
             {
                 var time = _teacherAvailability.StartTime;
                 while (time + duration <= end)
@@ -32,12 +32,12 @@ namespace WebApp.Services
                     var startDateTime = day.Date + time;
                     var endDateTime = day.Date + time + duration;
 
-                    var slot = new Reservations()
+                    var slot = new ReservationsModel()
                     {
                         StarTime = startDateTime,
                         EndTime = endDateTime,
                         TeacherAvailabilityId = _teacherAvailability.Id,
-                        status = Status.Free,
+                        Status = Status.Free,
                         StudentId = null
                     };
                     _context.Reservations.Add(slot);

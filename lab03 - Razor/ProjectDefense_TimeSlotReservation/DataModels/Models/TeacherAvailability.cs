@@ -23,6 +23,6 @@ namespace DataModelsLib.Models
         public TimeSpan EndTime { get; set; }
         public TimeSpan DurationMins { get; set; }
 
-        public ICollection<Reservations> Reservations { get; set; } 
+        public ICollection<ReservationsModel> Reservations { get; set; } 
     }
 }

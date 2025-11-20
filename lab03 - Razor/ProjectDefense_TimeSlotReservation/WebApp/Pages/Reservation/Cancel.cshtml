@@ -1,0 +1,42 @@
+﻿@page
+@model WebApp.Pages.Reservation.CancelModel
+
+@{
+    ViewData["Title"] = "Cancel reservation";
+}
+
+<h1>Cancel</h1>
+
+<h3>Are you sure you want to cancel this slot?</h3>
+<div>
+    <hr />
+    <table class="table table-bordered table-striped">
+	    <thead>
+	    <tr>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.StartTime)</th>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.EndTime)</th>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.Timespan)</th>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.StudentEmail)</th>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.TeacherEmail)</th>
+		    <th>@Html.DisplayNameFor(model => model.CancelViewModel.RoomDisplay)</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+	    <tr>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.StartTime)</td>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.EndTime)</td>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.Timespan)</td>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.StudentEmail)</td>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.TeacherEmail)</td>
+		    <td>@Html.DisplayFor(model => model.CancelViewModel.RoomDisplay)</td>
+	    </tr>
+	    </tbody>
+    </table>
+
+    
+    <form method="post">
+        <input type="hidden" asp-for="CancelViewModel.Id" />
+        <input type="submit" value="Cancel" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>
