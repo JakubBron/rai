@@ -1,0 +1,59 @@
+﻿@page
+@model WebApp.Pages.Availability.IndexModel
+
+@{
+	ViewData["Title"] = "Teacher availabilities";
+}
+
+<h1>Teacher availabilities</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+	    <th>
+            Whose reservation?
+	    </th>
+	    <th>
+		    Room
+	    </th>
+	    <th>
+		    Dates from - to
+	    </th>
+	    <th>
+		    Hours from - to
+	    </th>
+	    <th>
+		    Time slot duration
+	    </th>
+	    <th></th>
+    </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.TeacherAvailability) {
+	<tr>
+		<td>
+			@Html.DisplayFor(modelItem => item.TeacherEmail)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.RoomDisplay)
+		</td>
+
+		<td>
+			@Html.DisplayFor(modelItem => item.DaysDuration)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.HoursDuration)
+		</td>
+		<td>
+			@Html.DisplayFor(modelItem => item.DurationMins)
+		</td>
+		<td>
+			<a asp-page="../Reservations/Index">Go to Reservations</a>
+		</td>
+	</tr>
+}
+    </tbody>
+</table>

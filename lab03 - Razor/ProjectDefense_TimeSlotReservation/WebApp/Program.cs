@@ -35,6 +35,12 @@ builder.Services.AddTransient<IEmailSender, MailGunEmailSender>();
 
 var app = builder.Build();
 
+// populate with my roles
+using (var scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedRolesAsync(scope.ServiceProvider);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

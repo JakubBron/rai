@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DataModelsLib.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApp.ModelsInternal;
 
@@ -10,4 +11,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
         : base(options)
     {
     }
+
+    public DbSet<Room> Rooms { get; set; }
+    public DbSet<TeacherAvailability> TeacherAvailabilities { get; set; }
+    public DbSet<Reservations> Reservations { get; set; }
+    public DbSet<BlacklistEntity> Blacklist { get; set; }
 }
