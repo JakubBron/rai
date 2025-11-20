@@ -68,7 +68,7 @@ namespace WebApp.Areas.Identity.Pages.Account
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
         // list having all possible user roles
-        public IList<Role> Roles { get; set; }
+        public IList<Role> Roles { get; set; } = new List<Role>();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -118,10 +118,13 @@ namespace WebApp.Areas.Identity.Pages.Account
             Roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
         }
 
+       
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            Roles = Enum.GetValues(typeof(Role)).Cast<Role>().ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -147,11 +150,11 @@ namespace WebApp.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = callbackUrl });
                     }
                     else
                     {
