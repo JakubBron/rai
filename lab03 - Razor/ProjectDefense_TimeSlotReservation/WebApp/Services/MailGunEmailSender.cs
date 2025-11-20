@@ -20,7 +20,7 @@ public class MailGunEmailSender : IEmailSender
 
     public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
-        var apiKey = "f63c733cb9b3fe4ee15860a7e04368d8-e80d8b76-e15fb234";
+        var apiKey = _configuration["Mailgun:ApiKey"];
         var domain = "sandboxf73ee0311aca4778a5297ed5d3758605.mailgun.org";
 
         if (message.Contains("amp;"))
