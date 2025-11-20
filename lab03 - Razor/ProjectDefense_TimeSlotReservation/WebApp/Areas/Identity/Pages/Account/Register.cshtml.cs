@@ -176,7 +176,9 @@ namespace WebApp.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<User>();
+                var user = Activator.CreateInstance<User>();
+                user.Role = Input.Role;
+                return user;
             }
             catch
             {
