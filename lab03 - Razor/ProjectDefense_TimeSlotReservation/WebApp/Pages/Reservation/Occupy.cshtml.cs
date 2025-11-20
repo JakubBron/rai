@@ -63,6 +63,12 @@ namespace WebApp.Pages.Reservation
             {
                 return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotMissed });
             }
+
+            if (reservations.Status == Status.Blocked && reservations.StudentId == null)
+            {
+                return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotBlocked });
+            }
+
             Reservations = reservations;
             return Page();
         }
@@ -103,6 +109,10 @@ namespace WebApp.Pages.Reservation
                 if (reservationToOccupy.StarTime < DateTime.Now)
                 {
                     return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotMissed });
+                }
+                if (reservationToOccupy.Status == Status.Blocked && reservationToOccupy.StudentId == null)
+                {
+                    return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotBlocked });
                 }
 
                 reservationToOccupy.StudentId = currentlyLoggedInStudent.Id;

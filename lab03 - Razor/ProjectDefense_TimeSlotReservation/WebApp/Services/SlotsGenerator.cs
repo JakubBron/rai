@@ -9,7 +9,7 @@ namespace WebApp.Services
     {
         private readonly ApplicationDbContext _context;
         private TeacherAvailability _teacherAvailability;
-
+            
         public SlotsGenerator(ApplicationDbContext context, TeacherAvailability teacherAvailability)
         {
             _context = context;

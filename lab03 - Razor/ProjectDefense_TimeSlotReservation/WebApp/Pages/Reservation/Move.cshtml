@@ -1,0 +1,35 @@
+﻿@page "{id:int}"
+@model WebApp.Pages.Reservation.MoveModel
+
+<h1>Move Reservation</h1>
+
+<h3>Current Slot</h3>
+<p>
+	<strong>@Model.CurrentReservation.StarTime</strong> → 
+	<strong>@Model.CurrentReservation.EndTime</strong><br />
+	Student: @Model.UserEmail
+</p>
+
+<hr />
+
+<h3>Select Target Slot</h3>
+
+<form method="post">
+	<div>
+		<label>Select new slot:</label>
+		<select asp-for="TargetSlotId" class="form-control">
+			@foreach (var slot in Model.AvailableSlots)
+			{
+				<option value="@slot.Id">
+					@slot.StarTime.ToString("yyyy-MM-dd HH:mm") →
+					@slot.EndTime.ToString("HH:mm")
+				</option>
+			}
+		</select>
+	</div>
+
+	<br />
+
+	<button type="submit" class="btn btn-primary">Move</button>
+	<a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+</form>

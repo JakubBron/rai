@@ -13,5 +13,6 @@ namespace DataModelsLib.CustomTypes
         public static string NotOwner = "You are not the owner of this reservation and you can not cancel it.";
         public static string ReservationNotTaken = "You can not cancel Free slot.";
         public static string SlotMissed = "You are trying to reserve slot from the past.";
+        public static string SlotBlocked = "You can not perform any operation on blocked slot!";
     }
 }

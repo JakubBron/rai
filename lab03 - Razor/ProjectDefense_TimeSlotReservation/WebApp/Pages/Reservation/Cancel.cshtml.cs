@@ -67,6 +67,10 @@ namespace WebApp.Pages.Reservation
                 return RedirectToPage("./ActionNotAllowed",
                     new { reason = ActionNotAllowedReasons.ReservationNotTaken });
             }
+            else if (reservations.Status == Status.Blocked && reservations.StudentId == null)
+            {
+                return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotBlocked });
+            }
             else
             {
                 // cant cancel someones visit if is Student. Prowadzący can do it.
@@ -123,6 +127,10 @@ namespace WebApp.Pages.Reservation
             else if (currentUser.Id != reservations.StudentId && currentUser.Role == Role.Student)
             {
                 return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.NotOwner });
+            }
+            else if (reservations.Status == Status.Blocked && reservations.StudentId == null)
+            {
+                return RedirectToPage("./ActionNotAllowed", new { reason = ActionNotAllowedReasons.SlotBlocked });
             }
             else
             {
