@@ -8,8 +8,9 @@ using WebApp.API.Rooms;
 using WebApp.API.Slots;
 using WebApp.Data;
 using WebApp.ModelsInternal;
-;
+using DotNetEnv;
 
+Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

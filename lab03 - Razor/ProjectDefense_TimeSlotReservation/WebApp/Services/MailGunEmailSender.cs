@@ -20,8 +20,8 @@ public class MailGunEmailSender : IEmailSender
 
     public async Task SendEmailAsync(string toEmail, string subject, string message)
     {
-        var apiKey = _configuration["Mailgun:ApiKey"];
-        var domain = "sandboxf73ee0311aca4778a5297ed5d3758605.mailgun.org";
+        var apiKey = Environment.GetEnvironmentVariable("MailgunSendingAPIKey");
+        var domain = "sandbox07ef598a4afa40728f0c60859ee8a6f5.mailgun.org";
 
         if (message.Contains("amp;"))
         {
@@ -37,7 +37,7 @@ public class MailGunEmailSender : IEmailSender
         // Form data
         var form = new MultipartFormDataContent
         {
-            { new StringContent("Mailgun Sandbox <postmaster@sandboxf73ee0311aca4778a5297ed5d3758605.mailgun.org>"), "from" },
+            { new StringContent($"Mailgun Sandbox <postmaster@{domain}>"), "from" },
             { new StringContent(toEmail), "to" },
             { new StringContent(subject), "subject" },
             { new StringContent(message), "text" }

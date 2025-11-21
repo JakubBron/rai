@@ -416,3 +416,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+/lab03 - Razor/ProjectDefense_TimeSlotReservation/WebApp/.env
+/lab03 - Razor/ProjectDefense_TimeSlotReservation/WebApp/.env
