@@ -73,10 +73,28 @@ namespace WebApp.Pages.Availability
                 return Page();
             }
 
-
             var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (teacherId == null)
                 return Unauthorized();
+
+
+            bool overlaps = _context.TeacherAvailabilities.Any(a =>
+                // same room
+                (a.RoomId == Input.RoomId || a.TeacherId == teacherId) &&
+                // dates intersection
+                (Input.FirstDay <= a.LastDay && Input.LastDay >= a.FirstDay) &&
+                // time intersection
+                (Input.StartTime < a.EndTime && Input.EndTime > a.StartTime) &&
+                // same room OR same teacher
+                ((a.RoomId == Input.RoomId) || (a.TeacherId == teacherId))
+            );
+
+            if (overlaps)
+            {
+                ModelState.AddModelError(string.Empty, "You already have an availability that overlaps with these dates.");
+                Rooms = _context.Rooms.ToList();
+                return Page();
+            }
 
             var availability = new TeacherAvailability
             {
@@ -97,5 +115,6 @@ namespace WebApp.Pages.Availability
 
             return RedirectToPage("./Index");
         }
+
     }
 }
