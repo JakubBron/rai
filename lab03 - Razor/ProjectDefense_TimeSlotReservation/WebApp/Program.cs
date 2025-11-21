@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using WebApp.API;
+using WebApp.API.Rooms;
+using WebApp.API.Slots;
 using WebApp.Data;
 using WebApp.ModelsInternal;
 ;
@@ -82,5 +85,10 @@ app.UseAuthorization();
 app.MapRazorPages();
 app.UseSwagger(options => { });
 app.UseSwaggerUI();
+
+// API endpoints registration
+app.MapRoomsEndpoint();
+app.MapAvailableSlotsEndpoint();
+app.MapBookSlotsEndpoint();
 
 app.Run();
