@@ -19,6 +19,7 @@ public class IndexModel : PageModel
 
     public string Username { get; set; }
     public string Role { get; set; }
+    public string SlotReservingAvailabilities { get; set; }
     public async Task OnGetAsync()
     {
         if (User.Identity?.IsAuthenticated == true)
@@ -27,7 +28,8 @@ public class IndexModel : PageModel
             if (user != null)
             {
                 Username = user.UserName;
-                Role = user.Role.ToString(); // enum -> string
+                Role = user.Role.ToString();
+                SlotReservingAvailabilities = user.IsHoldingReservation == true ? "Yes" : "No";
             }
         }
     }

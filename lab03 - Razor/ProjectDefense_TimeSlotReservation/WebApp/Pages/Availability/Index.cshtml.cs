@@ -16,11 +16,21 @@ namespace WebApp.Pages.Availability
     public class TeacherAvailabilityViewModel
     {
         public int Id { get; set; }
+
+        [Display(Name = "Whose reservation?")]
         public string TeacherEmail { get; set; }
+
+        [Display(Name = "Dates from - to")]
         public string DaysDuration { get; set; }
+
+        [Display(Name = "Hours from - to")]
         public string HoursDuration { get; set; }
+
+        [Display(Name = "Time slot duration")]
         public TimeSpan DurationMins { get; set; }
-        public string RoomDisplay { get; set; } = default!; // e.g. "101 (Physics Lab)"
+
+        [Display(Name = "Room")]
+        public string RoomDisplay { get; set; } = default!;
     }
     public class IndexModel : PageModel
     {

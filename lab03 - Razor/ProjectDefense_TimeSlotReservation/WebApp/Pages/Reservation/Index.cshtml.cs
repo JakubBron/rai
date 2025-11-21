@@ -20,13 +20,19 @@ namespace WebApp.Pages.Reservation
     {
         public int Id { get; set; }
 
+        [Display(Name="Start")]
         public DateTime StartTime { get; set; }
+        [Display(Name = "End")]
         public DateTime EndTime { get; set; }
-        [DisplayName("Duration")]
+        [Display(Name = "Duration")]
         public string Timespan {get; set; }
+        [Display(Name="Status")]
         public string Status { get; set; } = default!;
+        [Display(Name="Who reserves?")]
         public string StudentEmail { get; set; } = "Free"; // show 'Free' if no student
+        [Display(Name = "To who?")]
         public string TeacherEmail { get; set; } = default!;
+        [Display(Name="Room name")]
         public string RoomDisplay { get; set; } = default!;
     }
 

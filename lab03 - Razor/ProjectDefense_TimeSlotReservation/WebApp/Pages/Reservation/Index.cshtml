@@ -13,29 +13,20 @@
 	<p>
 		<a asp-page="../Availability/Create">Create New Reservations via Creating Availability</a> |
 		<a asp-page="./BlockSlots">Block slots in datetime range</a> |
+		<a asp-page="./Export/Index">Export data</a>
 	</p>
 }
 
 <table class="table">
-    <thead>
-    <tr>
-	    <th>
-		    Duration
-	    </th>
-	    <th>
-		    To who?
-	    </th>
-	    <th>
-		    Who reserves?
-	    </th>
-	    <th>
-			Status
-	    </th>
-	    <th>
-            Room name
-	    </th>
-    </tr>
-    </thead>
+	<thead>
+	<tr>
+		<th>@Html.DisplayNameFor(model => model.ReservationsView[0].Timespan)</th>
+		<th>@Html.DisplayNameFor(model => model.ReservationsView[0].TeacherEmail)</th>
+		<th>@Html.DisplayNameFor(model => model.ReservationsView[0].StudentEmail)</th>
+		<th>@Html.DisplayNameFor(model => model.ReservationsView[0].Status)</th>
+		<th>@Html.DisplayNameFor(model => model.ReservationsView[0].RoomDisplay)</th>
+	</tr>
+	</thead>
     <tbody>
 @foreach (var item in Model.ReservationsView) {
         <tr>

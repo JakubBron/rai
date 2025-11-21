@@ -42,6 +42,7 @@ namespace WebApp.Pages.Reservation
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            // Validation not in model is on purpose
             if (id == null)
             {   
                 return NotFound();

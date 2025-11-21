@@ -11,7 +11,7 @@ using WebApp.Services;
 
 namespace WebApp.Pages.Reservation
 {
-    public class InputModel
+    public class InputModel: IValidatableObject
     {
         [Required]
         [DataType(DataType.DateTime)]
@@ -20,6 +20,14 @@ namespace WebApp.Pages.Reservation
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime End { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Start >= End)
+            {
+                yield return new ValidationResult(ValidationResultsMessages.StartTimeAfterEndTime, new[] { nameof(Start), nameof(End) });
+            }
+        }
     }
 
     [Authorize(Roles = RoleNames.Prowadzący)]
@@ -49,13 +57,6 @@ namespace WebApp.Pages.Reservation
         {
             if (!ModelState.IsValid)
             {
-                return NotFound();
-            }
-
-            
-            if (Input.Start >= Input.End)
-            {
-                ModelState.AddModelError(string.Empty, "Start time must be earlier than end time.");
                 return Page();
             }
 

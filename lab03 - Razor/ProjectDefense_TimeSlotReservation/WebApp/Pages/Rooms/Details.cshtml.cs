@@ -28,14 +28,14 @@ namespace WebApp.Pages.Rooms
                 return NotFound();
             }
 
-            var sala = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
-            if (sala == null)
+            var room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
+            if (room == null)
             {
                 return NotFound();
             }
             else
             {
-                Room = sala;
+                Room = room;
             }
             return Page();
         }

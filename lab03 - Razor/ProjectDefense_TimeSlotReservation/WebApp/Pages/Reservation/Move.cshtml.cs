@@ -29,13 +29,13 @@ namespace WebApp.Pages.Reservation
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            // Validation in script in on purpose.
             if (id == null)
             {
                 return NotFound();
             }
 
-            CurrentReservation = await _context.Reservations
-                .FirstOrDefaultAsync(r => r.Id == id);
+            CurrentReservation = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == id);
 
             if (CurrentReservation == null)
             {

@@ -40,11 +40,15 @@ namespace WebApp.Pages.Rooms
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
+            {
                 return NotFound();
+            }
 
             var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == id);
             if (room == null)
+            {
                 return NotFound();
+            }
 
             Input = new RoomEditModel
             {
@@ -59,13 +63,16 @@ namespace WebApp.Pages.Rooms
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
+            {
                 return Page();
+            }
 
             var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == Input.Id);
             if (room == null)
+            {
                 return NotFound();
+            }
 
-            // Map back from ViewModel to entity
             room.RoomName = Input.RoomName;
             room.RoomNumber = Input.RoomNumber;
 

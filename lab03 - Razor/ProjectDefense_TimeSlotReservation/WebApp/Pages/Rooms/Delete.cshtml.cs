@@ -6,17 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataModelsLib.Models;
+using Microsoft.AspNetCore.Identity;
 using WebApp.Data;
+using WebApp.ModelsInternal;
 
 namespace WebApp.Pages.Rooms
 {
     public class DeleteModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<User> _userManager;
 
-        public DeleteModel(ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [BindProperty]
@@ -29,15 +33,15 @@ namespace WebApp.Pages.Rooms
                 return NotFound();
             }
 
-            var sala = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _context.Rooms.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (sala == null)
+            if (room == null)
             {
                 return NotFound();
             }
             else
             {
-                Room = sala;
+                Room = room;
             }
             return Page();
         }
@@ -49,13 +53,37 @@ namespace WebApp.Pages.Rooms
                 return NotFound();
             }
 
-            var sala = await _context.Rooms.FindAsync(id);
-            if (sala != null)
+            var roomToDelete = await _context.Rooms
+                .Include(r => r.Availabilities)
+                .ThenInclude(a => a.Reservations)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (roomToDelete == null)
             {
-                Room = sala;
-                _context.Rooms.Remove(Room);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            foreach (var availability in roomToDelete.Availabilities)
+            {
+                foreach (var reservation in availability.Reservations)
+                {
+                    if (!string.IsNullOrEmpty(reservation.StudentId))
+                    {
+                        var student = await _userManager.FindByIdAsync(reservation.StudentId);
+                        if (student != null)
+                        {
+                            student.IsHoldingReservation = false;
+                        }
+                    }
+                    _context.Reservations.Remove(reservation);
+                }
+
+                _context.TeacherAvailabilities.Remove(availability);
+            }
+
+            _context.Rooms.Remove(roomToDelete);
+
+            await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

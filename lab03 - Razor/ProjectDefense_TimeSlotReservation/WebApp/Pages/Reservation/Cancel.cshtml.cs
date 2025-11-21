@@ -32,6 +32,8 @@ namespace WebApp.Pages.Reservation
         public string TeacherEmail { get; set; } = default!;
         [Display(Name = "Where?")]
         public string RoomDisplay { get; set; } = default!;
+
+        // CUSTOM VALIDATION LOGIC ON OnPostAsync(), on purpose
     }
 
     public class CancelModel : PageModel

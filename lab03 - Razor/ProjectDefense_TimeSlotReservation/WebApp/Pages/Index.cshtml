@@ -1,4 +1,5 @@
 ﻿@page
+@using DataModelsLib.CustomTypes
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
@@ -9,6 +10,10 @@
 @if (User.Identity?.IsAuthenticated == true)
 {
 	<p>Hello, <strong>@Model.Username</strong>! Your role is <strong>@Model.Role</strong>.</p>
+	@if (User.IsInRole(RoleNames.Student))
+	{
+		<p>Do I have any reserved slots? <strong>@Model.SlotReservingAvailabilities</strong></p>
+	}
 }
 else
 {

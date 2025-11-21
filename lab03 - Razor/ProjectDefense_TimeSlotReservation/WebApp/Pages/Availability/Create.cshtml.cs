@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataModelsLib.Models;
+using DataModelsLib.CustomTypes;
 using WebApp.Data;
 using WebApp.Services;
 using System.ComponentModel.DataAnnotations;
@@ -13,13 +14,13 @@ using System.Security.Claims;
 
 namespace WebApp.Pages.Availability
 {
-    public class CreateTeacherAvailabilityModel
+    public class CreateTeacherAvailabilityModel : IValidatableObject
     {
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "First day")]
         public DateTime FirstDay { get; set; } = DateTime.Now.Date;
-        
+
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Last day")]
@@ -40,9 +41,30 @@ namespace WebApp.Pages.Availability
         [Display(Name = "Slot Duration (minutes)")]
         public int DurationMins { get; set; } = 15;
 
-        [Required]
-        [Display(Name = "Room")]
-        public int RoomId { get; set; }
+        [Required] [Display(Name = "Room")] public int RoomId { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (FirstDay > LastDay)
+            {
+                yield return new ValidationResult(ValidationResultsMessages.FirstDayAfterLastDay, new[] { nameof(FirstDay), nameof(LastDay) });
+            }
+
+            if (StartTime > EndTime)
+            {
+                yield return new ValidationResult(ValidationResultsMessages.StartTimeAfterEndTime, new[] { nameof(StartTime), nameof(EndTime) });
+            }
+
+            if (DurationMins <= 0)
+            {
+                yield return new ValidationResult(ValidationResultsMessages.DurationNegative, new[] { nameof(DurationMins) });
+            }
+
+            if (DurationMins > (EndTime - StartTime).TotalMinutes)
+            {
+                yield return new ValidationResult(ValidationResultsMessages.DurationGreaterThanTime, new[] { nameof(DurationMins) });
+            }
+        }
     }
 
 
