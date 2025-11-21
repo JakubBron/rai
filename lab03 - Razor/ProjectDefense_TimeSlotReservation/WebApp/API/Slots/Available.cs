@@ -11,7 +11,6 @@ namespace WebApp.API.Slots
 {
     public static class Available
     {
-
         public static void MapAvailableSlotsEndpoint(this WebApplication app)
         {
             List<SlotDTO> freeSlots = new List<SlotDTO>();

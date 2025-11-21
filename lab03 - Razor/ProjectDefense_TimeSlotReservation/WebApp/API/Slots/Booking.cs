@@ -13,7 +13,7 @@ namespace WebApp.API.Slots
         [AllowAnonymous]
         public static void MapBookSlotsEndpoint(this WebApplication app)
         {
-            app.MapPost("/api/slots/{id}/book", async (int id, BookingRequest request, ApplicationDbContext db) => 
+            app.MapPost("/api/slots/{id}/book", async (int id, BookingRequest request, ApplicationDbContext db) =>
                 {
                     var reservation = await db.Reservations.FindAsync(id);
                     if (reservation == null)
@@ -40,7 +40,7 @@ namespace WebApp.API.Slots
                     {
                         return Results.BadRequest(ValidationResultsMessages.UserHasReservations);
                     }
-                    
+
                     reservation.StudentId = student.Id;
                     reservation.Status = Status.Blocked;
                     student.IsHoldingReservation = true;
@@ -49,8 +49,7 @@ namespace WebApp.API.Slots
                     await db.SaveChangesAsync();
 
                     return Results.Ok(new { Message = "Reservation sent!" });
-                    })
-                .WithTags("Slots");
+                }).WithTags("Slots");
         }
     }
 }
