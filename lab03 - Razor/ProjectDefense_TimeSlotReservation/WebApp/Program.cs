@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using WebApp.Data;
 using WebApp.ModelsInternal;
+;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 // use our custom User class
 builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -18,10 +20,11 @@ builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.Requi
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddRazorPages().AddViewLocalization().AddDataAnnotationsLocalization();
 
-
-builder.Services.AddRazorPages();
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // cookies
 builder.Services.ConfigureApplicationCookie(options =>
@@ -34,6 +37,21 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddTransient<IEmailSender, MailGunEmailSender>();
 
 var app = builder.Build();
+
+// Supported cultures
+var supportedCultures = new[]
+{
+    new CultureInfo("pl-PL"),
+    new CultureInfo("en-US")
+};
+
+// Localization middleware
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pl-PL"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
 
 // populate with my roles
 using (var scope = app.Services.CreateScope())
@@ -62,5 +80,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+app.UseSwagger(options => { });
+app.UseSwaggerUI();
 
 app.Run();
